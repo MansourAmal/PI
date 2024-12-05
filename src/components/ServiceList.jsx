@@ -1,148 +1,100 @@
-import React, { useState, useEffect } from "react";
-import { useLocation } from "react-router-dom";
-import "./styles/ServiceList.css"; 
+import React, { useState, useEffect } from "react"; 
+import { useLocation } from "react-router-dom"; 
+import traiteurData from './traitData'; 
+import salleData from './salleData'; 
+import "./styles/ServiceList.css";
 
 const ServiceList = () => {
-  const location = useLocation();
-  const { selectedService } = location.state || {}; 
+  const location = useLocation(); 
+  const selectedService = location.state?.selectedService || "";
 
   const [services, setServices] = useState([]); 
-  const [loading, setLoading] = useState(true); 
-  const [error, setError] = useState(null); 
   const [isBooking, setIsBooking] = useState(false); 
-  const [isAppointment, setIsAppointment] = useState(false); 
+  const [isTimeModalOpen, setIsTimeModalOpen] = useState(false); 
   const [selectedServiceId, setSelectedServiceId] = useState(null); 
-  const [formData, setFormData] = useState({
-    name: "",
-    email: "",
-    date: "",
-    message: "",
-  });
-  const [appointmentData, setAppointmentData] = useState({
-    date: "",
-    time: "",
-  });
+  const [selectedDate, setSelectedDate] = useState(""); 
+  const [selectedTime, setSelectedTime] = useState(""); 
+  const [formData, setFormData] = useState({ name: "", email: "", message: "", });
 
-  useEffect(() => {
-    if (selectedService) {
-      fetch(`http://localhost:5000/api/services?category=${selectedService}`)
-        .then((response) => {
-          if (!response.ok) {
-            throw new Error("Erreur de réseau");
-          }
-          return response.json();
-        })
-        .then((data) => {
-          setServices(data); 
-          setLoading(false); 
-        })
-        .catch((error) => {
-          setError(error.message); 
-          setLoading(false);
-        });
-    }
+  useEffect(() => { 
+    let filteredServices = []; 
+    if (selectedService === "Traiteur") { 
+      filteredServices = traiteurData; 
+    } else if (selectedService === "Salle des fêtes") { 
+      filteredServices = salleData; 
+    } else { 
+      filteredServices = [...traiteurData, ...salleData]; 
+    } 
+    setServices(filteredServices); 
   }, [selectedService]);
 
-  const handleBookNow = (serviceId) => {
+  const handleBookNow = (serviceId) => { 
     setIsBooking(true); 
     setSelectedServiceId(serviceId); 
   };
 
-  const handleInputChange = (e) => {
-    const { name, value } = e.target;
-    setFormData((prevData) => ({
-      ...prevData,
-      [name]: value,
-    }));
+  const handleTimeSelect = (date, time) => {
+    setSelectedDate(date);
+    setSelectedTime(time);
+    
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    const reservationData = {
-      serviceId: selectedServiceId,
-      ...formData,
-    };
-
-    fetch("http://localhost:5000/api/reservations", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(reservationData),
-    })
-      .then((response) => response.json())
-      .then((data) => {
-        console.log("Réservation confirmée:", data);
-        setIsBooking(false); 
-      })
-      .catch((error) => {
-        console.error("Erreur lors de la réservation:", error);
-      });
+  const handleInputChange = (e) => { 
+    const { name, value } = e.target; 
+    setFormData((prevData) => ({ ...prevData, [name]: value, })); 
   };
 
-  const handleAppointmentChange = (e) => {
-    const { name, value } = e.target;
-    setAppointmentData((prevData) => ({
-      ...prevData,
-      [name]: value,
-    }));
+  const handleSubmit = (e) => { 
+    e.preventDefault(); 
+    const reservationData = { serviceId: selectedServiceId, ...formData, date: selectedDate, time: selectedTime, }; 
+    console.log("Réservation confirmée:", reservationData); 
+    setIsBooking(false); 
   };
 
-  const handleAppointmentSubmit = (e) => {
-    e.preventDefault();
-    const appointment = {
-      serviceId: selectedServiceId,
-      date: appointmentData.date,
-      time: appointmentData.time,
-    };
+  return ( 
+    <div className="services-list"> 
+      {services.length === 0 ? ( 
+        <p>Aucun service disponible pour ce choix.</p>
+      ) : ( 
+        services.map((service) => ( 
+          <div key={service.id} className="service-card"> 
+            <img src={service.imgUrl} alt={service.nom} className="service-image" /> 
+            <div className="service-info"> 
+              <h3>{service.nom}</h3> 
+              <p>{service.lieu}</p> 
+              <p>Prix: {service.price} TND</p> 
+              <p>{service.description}</p> 
+              <button onClick={() => setIsTimeModalOpen(true)} className="appointment-button">
+                Prendre un rendez-vous 
+              </button> 
+              <button onClick={() => handleBookNow(service.id)} className="reserve-button"> 
+                Confirmer la réservation 
+              </button> 
+            </div> 
+          </div> 
+        )) 
+      )}
 
-    fetch("http://localhost:5000/api/appointments", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(appointment),
-    })
-      .then((response) => response.json())
-      .then((data) => {
-        console.log("Rendez-vous confirmé:", data);
-        setIsAppointment(false); 
-      })
-      .catch((error) => {
-        console.error("Erreur lors du rendez-vous:", error);
-      });
-  };
-
-  if (loading) {
-    return <p>Chargement des services...</p>;
-  }
-
-  if (error) {
-    return <p className="result">Erreur : {error}</p>;
-  }
-
-  return (
-    <div className="services-list">
-      {services.length > 0 ? (
-        services.map((service) => (
-          <div key={service.id} className="service-card">
-            <img src={service.imgUrl} alt={service.nom} className="service-image" />
-            <div className="service-info">
-              <h3>{service.nom}</h3>
-              <p>{service.lieu}</p>
-              <p>Prix: {service.price} TND</p>
-              <p>{service.description}</p>
-              <button onClick={() => handleBookNow(service.id)} className="appointment-button">
-                Réserver
-              </button>
-              <button onClick={() => setIsAppointment(true)} className="appointment-button">
-                Prendre rendez-vous
-              </button>
-            </div>
+      {isTimeModalOpen && (
+        <div className="time-modal-overlay" onClick={() => setIsTimeModalOpen(false)}>
+          <div className="time-modal">
+            <h3>Choisir la date et l'heure du rendez-vous</h3>
+            <label htmlFor="modalDate">Sélectionner la date:</label>
+            <input
+              type="date"
+              id="modalDate"
+              value={selectedDate}
+              onChange={(e) => setSelectedDate(e.target.value)}
+            />
+            <h4>Choisir l'heure:</h4>
+            <button onClick={() => handleTimeSelect(selectedDate, "09:00")}>09:00</button>
+            <button onClick={() => handleTimeSelect(selectedDate, "10:00")}>10:00</button>
+            <button onClick={() => handleTimeSelect(selectedDate, "11:00")}>11:00</button>
+            <button onClick={() => handleTimeSelect(selectedDate, "14:00")}>14:00</button>
+            <button onClick={() => handleTimeSelect(selectedDate, "16:00")}>16:00</button>
+            <button onClick={() => setIsTimeModalOpen(false)}>Annuler</button>
           </div>
-        ))
-      ) : (
-        <p className="result">Aucun service disponible pour "{selectedService}".</p>
+        </div>
       )}
 
       {isBooking && (
@@ -179,8 +131,8 @@ const ServiceList = () => {
                   type="date"
                   id="date"
                   name="date"
-                  value={formData.date}
-                  onChange={handleInputChange}
+                  value={selectedDate}
+                  onChange={(e) => setSelectedDate(e.target.value)}
                   required
                 />
               </div>
@@ -195,42 +147,6 @@ const ServiceList = () => {
               </div>
               <button type="submit" className="submit-button">
                 Confirmer la réservation
-              </button>
-            </form>
-          </div>
-        </>
-      )}
-
-      {isAppointment && (
-        <>
-          <div className="booking-form-overlay" onClick={() => setIsAppointment(false)}></div>
-          <div className="booking-form">
-            <h3>Fixer un rendez-vous pour {services.find((s) => s.id === selectedServiceId)?.nom}</h3>
-            <form onSubmit={handleAppointmentSubmit}>
-              <div>
-                <label htmlFor="date">Date du rendez-vous:</label>
-                <input
-                  type="date"
-                  id="date"
-                  name="date"
-                  value={appointmentData.date}
-                  onChange={handleAppointmentChange}
-                  required
-                />
-              </div>
-              <div>
-                <label htmlFor="time">Heure du rendez-vous:</label>
-                <input
-                  type="time"
-                  id="time"
-                  name="time"
-                  value={appointmentData.time}
-                  onChange={handleAppointmentChange}
-                  required
-                />
-              </div>
-              <button type="submit" className="submit-button">
-                Confirmer le rendez-vous
               </button>
             </form>
           </div>

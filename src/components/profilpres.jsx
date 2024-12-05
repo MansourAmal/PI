@@ -23,8 +23,8 @@ const { Dragger } = Upload;
 
 const Profile = () => {
   const { id } = useParams();
-  const [service, setService] = useState("traiteur"); // Le prestataire choisit entre "traiteur" ou "salle des fêtes"
-  const [currentView, setCurrentView] = useState("welcome"); // Vue initiale du profil
+  const [service, setService] = useState("traiteur"); 
+  const [currentView, setCurrentView] = useState("welcome"); 
   const [isDeactivating, setIsDeactivating] = useState(false);
   const [profileData, setProfileData] = useState({
     nom: "",
@@ -39,11 +39,10 @@ const Profile = () => {
   });
   const [numberOfReservations, setNumberOfReservations] = useState(0);
 
-  // Fonction pour récupérer les données du profil et le nombre de réservations
   useEffect(() => {
     const fetchProfileData = async () => {
       try {
-        const profileResponse = await fetch(`/api/profile/${id}`); // On inclut l'ID dans la requête API
+        const profileResponse = await fetch(`/api/profile/${id}`); 
         const profileData = await profileResponse.json();
         const reservationsResponse = await fetch(`/api/reservations/count/${id}`);
         const reservationsData = await reservationsResponse.json();

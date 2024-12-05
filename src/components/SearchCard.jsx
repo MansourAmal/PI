@@ -7,14 +7,15 @@ const SearchCard = () => {
   const navigate = useNavigate();
 
   const services = [
-    { name: "Photographe", id: "photographe" },
     { name: "Traiteur", id: "traiteur" },
     { name: "Salle des fêtes", id: "salle_fetes" },
   ];
 
   const handleSearch = () => {
     if (selectedService) {
-      navigate("/services", { state: { selectedService } }); // Naviguer avec le service sélectionné
+      navigate("/services", { state: { selectedService } }); 
+    } else {
+      alert("Veuillez sélectionner un service");
     }
   };
 

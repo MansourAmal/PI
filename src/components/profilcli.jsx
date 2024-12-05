@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from "react"; 
 import { Card, Button, Typography, List, Calendar, Badge, Form, Input, Modal, message } from "antd";
-import { useParams } from "react-router-dom";  // Importer useParams pour récupérer l'ID
+import { useParams } from "react-router-dom";  
 import "./styles/profilcli.css";
 import "antd/dist/reset.css";
 
 const { Title } = Typography;
 
 const ProfileClient = (props) => {
-  const { lid } = useParams();  // Récupérer l'ID du client à partir de l'URL
+  const { lid } = useParams();  
   const [view, setView] = useState("welcome");
   const [isEditing, setIsEditing] = useState(false);
   const [isDeactivating, setIsDeactivating] = useState(false);
