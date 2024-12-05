@@ -7,6 +7,7 @@ import Profilpres from "./profilpres";
 import Register from "./register";
 import Home from "./home";
 import Homecli from "./homecli";
+import ServiceList from "./ServiceList";
 
 const Routers = () => {
   return (
@@ -17,7 +18,9 @@ const Routers = () => {
       <Route path="/register" element={<Register />} />
       <Route path="/home" element={<Home/>}/>
       <Route path="/homecli" element={<Homecli/>}/>
-    </Routes>
+      <Route path="/" element={<Navigate to="/home" />} />
+      <Route path="/services" element={<ServiceList />} />
+      </Routes>
   );
 };
 

@@ -1,13 +1,9 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Input, Button, Card, Form, Typography, message } from "antd";
-import "antd/dist/reset.css";;
+import "antd/dist/reset.css";
 import "./styles/login.css";
 
-const { Title } = Typography;
-
-const Login = () => {
-  const [email, setEmail] = useState("");
 const { Title } = Typography;
 
 const Login = () => {
@@ -33,9 +29,8 @@ const Login = () => {
       const data = await response.json();
 
       if (response.ok) {
-        console.log("Login successful", data);
-        const clientId = data.id;
         message.success("Login successful!");
+        const clientId = data.id;
         navigate(`/profilcli/${clientId}`);
       } else {
         message.error(data.message || "Login failed!");
@@ -104,5 +99,4 @@ const Login = () => {
   );
 };
 
-};
 export default Login;

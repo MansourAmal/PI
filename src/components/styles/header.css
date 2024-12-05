@@ -30,7 +30,7 @@
   transition: background-color 0.3s ease, transform 0.2s ease; 
 }
 
-.authButton:hover, .logoutButton:hover {
+.authButton:hover, .logoutButton:hover  {
   background-color: #FF878D; 
   transform: translateY(-2px);
   color:#FF878D; 

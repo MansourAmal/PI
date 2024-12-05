@@ -1,14 +1,5 @@
 import React, { useState } from "react";
-import {Input,
-  Button,
-  Card,
-  Form,
-  Select,
-  Space,
-  Typography,
-  Radio,
-  Upload,
-} from "antd";
+import {Input,Button,Card,Form,Select,Space,Typography,Radio,Upload,} from "antd";
 import "antd/dist/reset.css";
 import "./styles/register.css";
 import { useNavigate } from "react-router-dom";

@@ -1,20 +1,20 @@
 .search-card-container {
-    position: absolute; /* Positionne la carte au-dessus du carrousel */
-    top: 50%; /* Centre verticalement */
-    left: 50%; /* Centre horizontalement */
-    transform: translate(-50%, -50%); /* Ajuste le positionnement pour un centrage exact */
-    z-index: 10; /* S'assure que la carte est au-dessus du carrousel */
+    position: absolute; 
+    top: 50%; 
+    left: 50%; 
+    transform: translate(-50%, -50%); 
+    z-index: 10; 
     width: 100%;
-    max-width: 400px; /* Largeur de la carte de recherche */
+    max-width: 600px; 
     padding: 20px;
     border-radius: 8px;
-    background-color: rgba(255, 255, 255, 0.9); /* Fond semi-transparent */
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Ombre portée */
+    background-color: rgba(255, 255, 255, 0.9); 
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); 
   }
   
   .search-card {
     width: 100%;
-    max-width: 400px;
+    max-width: 500px;
     margin: 20px auto;
     padding: 20px;
     border: 1px solid #ddd;
@@ -33,6 +33,7 @@
     cursor: pointer;
     font-size: 16px;
     transition: background-color 0.3s ease;
+    margin: 10px;
   }
   
   .search-button:hover {

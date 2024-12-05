@@ -1,5 +1,5 @@
 import React from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 import { Button } from "antd";
 import logo from "../assets/logo.png";
 import "./styles/header.css";
@@ -7,6 +7,7 @@ import { Container } from "reactstrap";
 
 const Header = () => {
   const navigate = useNavigate();
+  const location = useLocation(); 
   const isAuthenticated = false;
 
   const handleLogout = () => {
@@ -37,6 +38,15 @@ const Header = () => {
               Nous rejoindre
             </Button>
           </>
+        )}
+
+        {location.pathname === "/homecli" && (
+          <Button
+            onClick={() => navigate("/profilcli")}
+            className="authButton"
+          >
+            Mon Profil
+          </Button>
         )}
       </div>
     </Container>
