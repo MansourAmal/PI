@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from "react";
+import { useParams } from "react-router-dom"; // Pour récupérer l'ID depuis l'URL
+
 import {
   Card,
   Button,
@@ -20,6 +22,7 @@ const { Option } = Select;
 const { Dragger } = Upload;
 
 const Profile = () => {
+  const { id } = useParams();
   const [service, setService] = useState("traiteur"); // Le prestataire choisit entre "traiteur" ou "salle des fêtes"
   const [currentView, setCurrentView] = useState("welcome"); // Vue initiale du profil
   const [isDeactivating, setIsDeactivating] = useState(false);
@@ -40,15 +43,14 @@ const Profile = () => {
   useEffect(() => {
     const fetchProfileData = async () => {
       try {
-        const profileResponse = await fetch("/api/profile");
+        const profileResponse = await fetch(`/api/profile/${id}`); // On inclut l'ID dans la requête API
         const profileData = await profileResponse.json();
-
-        const reservationsResponse = await fetch("/api/reservations/count"); // API pour le nombre de réservations
+        const reservationsResponse = await fetch(`/api/reservations/count/${id}`);
         const reservationsData = await reservationsResponse.json();
 
         if (profileResponse.ok && reservationsResponse.ok) {
           setProfileData(profileData);
-          setNumberOfReservations(reservationsData.count); // On récupère le nombre de réservations
+          setNumberOfReservations(reservationsData.count);
         } else {
           message.error("Erreur lors de la récupération des informations");
         }
@@ -57,8 +59,8 @@ const Profile = () => {
       }
     };
 
-    fetchProfileData(); // Appel de la fonction lors du montage du composant
-  }, []);
+    fetchProfileData();
+  }, [id]); 
 
   // Fonction pour mettre à jour les informations du profil
   const handleUpdateProfile = (values) => {

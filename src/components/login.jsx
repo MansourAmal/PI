@@ -1,19 +1,25 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Input, Button, Card, Form, Typography, message } from "antd";
-import "antd/dist/reset.css";
+import "antd/dist/reset.css";;
 import "./styles/login.css";
 
 const { Title } = Typography;
 
 const Login = () => {
   const [email, setEmail] = useState("");
+const { Title } = Typography;
+
+const Login = () => {
+  const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
   const handleLogin = async (values) => {
     try {
-      const response = await fetch("http://127.0.0.1:8000/inscription/", {
+      setLoading(true);
+      const response = await fetch("http://127.0.0.1:5000/login", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -28,14 +34,17 @@ const Login = () => {
 
       if (response.ok) {
         console.log("Login successful", data);
+        const clientId = data.id;
         message.success("Login successful!");
-        navigate("/profilcli");
+        navigate(`/profilcli/${clientId}`);
       } else {
         message.error(data.message || "Login failed!");
       }
     } catch (error) {
       console.error("Error during login:", error);
       message.error("An error occurred. Please try again.");
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -83,6 +92,7 @@ const Login = () => {
               type="primary"
               htmlType="submit"
               block
+              loading={loading}
               className="login-button"
             >
               Login
@@ -94,4 +104,5 @@ const Login = () => {
   );
 };
 
+};
 export default Login;

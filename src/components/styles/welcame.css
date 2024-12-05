@@ -1,0 +1,39 @@
+
+
+html, body {
+  width: 100%;
+  overflow-x: hidden; 
+}
+
+.container {
+  max-width: 100%; 
+  padding: 0; 
+}
+
+.slideritem {
+  width: 100%;
+  height: 100vh;
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+
+.item-01 {
+  background-image: url("../../assets/S4.jpg");
+}
+
+.item-02 {
+  background-image: url("../../assets/S2.jpg");
+}
+
+.item-03 {
+  background-image: url("../../assets/S3.jpg");
+}
+
+.item-04 {
+  background-image: url("../../assets/banner.jpg");
+}

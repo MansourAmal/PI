@@ -1,0 +1,109 @@
+/* Étoiles */
+.ri-star-fill {
+  color: gold;
+  font-size: 24px;
+  transition: transform 0.3s ease, color 0.3s ease;
+}
+
+.ri-star-fill:hover {
+  transform: scale(1.2);
+  color: #FF6F61; /* Couleur différente au survol */
+}
+
+/* Titre de la carte */
+.card-title h1 {
+  color: #FF878D;
+  font-size: 2.5rem; /* Taille de police augmentée pour plus d'impact */
+  font-weight: 600;
+  text-align: center;
+  letter-spacing: 2px;
+  margin-bottom: 20px;
+  text-shadow: 2px 2px 6px rgba(0, 0, 0, 0.2); /* Ombre pour le texte */
+}
+
+/* Zone des témoignages */
+.testimonial-area {
+  padding: 50px 0; 
+  background-color: #f9f9f9; 
+  
+}
+
+.testimonial {
+  background-color: white;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Ombre légère pour un effet de carte */
+  padding: 20px;
+  border-radius: 8px; /* Coins arrondis pour un look plus doux */
+  margin:30px; /* Espacement entre les cartes */
+  min-height: 320px; /* Hauteur minimale uniforme pour toutes les cartes */
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.testimonial p {
+  font-size: 1.1rem;
+  color: #555;
+  line-height: 1.8rem; /* Améliorer la lisibilité */
+  margin-bottom: 20px;
+}
+
+.testimonial h6 {
+  font-size: 1.2rem;
+  font-weight: 500;
+  color: #333;
+}
+
+.avis a {
+  text-decoration: none;
+  color: #FF878D;
+  display: flex;
+  justify-content: center;
+  font-size: 1.1rem;
+  font-weight: 600;
+}
+
+.avis a:hover {
+  text-decoration: underline;
+  color: #FF6F61; /* Couleur différente au survol */
+}
+
+/* Conteneur de Slider (pour aligner les cartes de manière uniforme) */
+.slick-slide {
+  display: flex;
+  justify-content: center; /* Centrer les éléments */
+  align-items: flex-start; /* Alignement au début pour la hauteur */
+}
+
+/* Responsivité */
+@media only screen and (max-width: 768px) {
+  .testimonial p {
+    font-size: 0.9rem; /* Taille plus petite pour les petits écrans */
+    line-height: 1.6rem;
+  }
+
+  .testimonial h6 {
+    font-size: 1.1rem;
+  }
+
+  .card-title h1 {
+    font-size: 1.8rem;
+    line-height: 1.5rem;
+    margin-top: 40px; /* Réduction de l'espace au-dessus */
+  }
+  
+  .testimonial {
+    margin-left: 10px;
+    margin-right: 10px;
+  }
+}
+
+@media only screen and (max-width: 576px) {
+  .testimonial p {
+    font-size: 0.85rem;
+  }
+
+  .testimonial h6 {
+    font-size: 1rem;
+  }
+}

@@ -5,6 +5,9 @@ import Login from "./login";
 import Profilcli from "./profilcli";
 import Profilpres from "./profilpres";
 import Register from "./register";
+import Home from "./home";
+import Homecli from "./homecli";
+
 const Routers = () => {
   return (
     <Routes>
@@ -12,6 +15,8 @@ const Routers = () => {
       <Route path="/profilcli" element={<Profilcli />} />
       <Route path="/profilpres" element={<Profilpres />} />
       <Route path="/register" element={<Register />} />
+      <Route path="/home" element={<Home/>}/>
+      <Route path="/homecli" element={<Homecli/>}/>
     </Routes>
   );
 };

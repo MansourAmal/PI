@@ -1,28 +1,17 @@
-import React, { useState, useEffect } from "react";
-import {
-  Card,
-  Button,
-  Typography,
-  List,
-  Calendar,
-  Badge,
-  Form,
-  Input,
-  Modal,
-  message,
-} from "antd";
+import React, { useState, useEffect } from "react"; 
+import { Card, Button, Typography, List, Calendar, Badge, Form, Input, Modal, message } from "antd";
+import { useParams } from "react-router-dom";  // Importer useParams pour récupérer l'ID
 import "./styles/profilcli.css";
 import "antd/dist/reset.css";
 
 const { Title } = Typography;
 
 const ProfileClient = (props) => {
-  // Déclarations des états pour gérer l'affichage et les données du client
-  const [view, setView] = useState("welcome"); // Vue actuelle du profil (accueil, informations, rendez-vous, etc.)
-  const [isEditing, setIsEditing] = useState(false); // État pour gérer la modification du profil
-  const [isDeactivating, setIsDeactivating] = useState(false); // État pour gérer la désactivation du compte
+  const { lid } = useParams();  // Récupérer l'ID du client à partir de l'URL
+  const [view, setView] = useState("welcome");
+  const [isEditing, setIsEditing] = useState(false);
+  const [isDeactivating, setIsDeactivating] = useState(false);
 
-  // État pour stocker les informations du client
   const [clientData, setClientData] = useState({
     nom: "",
     prenom: "",
@@ -32,14 +21,12 @@ const ProfileClient = (props) => {
     nbRendezVous: 0,
   });
 
-  // États pour stocker les réservations et les rendez-vous
-  const [reservations, setReservations] = useState([]); // Liste des réservations du client
-  const [appointments, setAppointments] = useState([]); // Liste des rendez-vous du client
+  const [reservations, setReservations] = useState([]);
+  const [appointments, setAppointments] = useState([]);
 
-  // Récupération des données via l'API (client, réservations, rendez-vous)
   useEffect(() => {
-    // Récupérer les données du client
-    fetch("https://api.example.com/client")
+    // Récupérer les données du client en utilisant l'ID (lid)
+    fetch(`http://127.0.0.1:5000/client/${lid}`)  // Utilisez l'ID du client dans l'URL
       .then((response) => response.json())
       .then((data) => {
         setClientData({
@@ -56,43 +43,38 @@ const ProfileClient = (props) => {
         message.error("Erreur lors de la récupération des données client.");
       });
 
-    // Récupérer les réservations
-    fetch("https://api.example.com/reservations")
+    fetch(`https://api.example.com/reservations/${lid}`)  // Récupérer les réservations spécifiques au client
       .then((response) => response.json())
       .then((data) => {
-        setReservations(data); // Mettre à jour l'état des réservations
+        setReservations(data);
       })
       .catch((error) => {
         console.error("Erreur de récupération des réservations:", error);
         message.error("Erreur lors de la récupération des réservations.");
       });
 
-    // Récupérer les rendez-vous
-    fetch("https://api.example.com/appointments")
+    fetch(`https://api.example.com/appointments/${lid}`)  // Récupérer les rendez-vous spécifiques au client
       .then((response) => response.json())
       .then((data) => {
-        setAppointments(data); // Mettre à jour l'état des rendez-vous
+        setAppointments(data);
       })
       .catch((error) => {
         console.error("Erreur de récupération des rendez-vous:", error);
         message.error("Erreur lors de la récupération des rendez-vous.");
       });
-  }, []); // Cette fonction ne s'exécute qu'une seule fois lors du chargement initial
+  }, [lid]);  // Requête API à chaque changement de l'ID du client
 
-  // Fonction de gestion de la modification du profil
   const handleEditProfile = (values) => {
-    setClientData({ ...clientData, ...values }); // Met à jour les données du client avec les nouvelles valeurs
-    setIsEditing(false); // Ferme le modal de modification
+    setClientData({ ...clientData, ...values });
+    setIsEditing(false);
     message.success("Profil mis à jour avec succès");
   };
 
-  // Fonction de gestion de la désactivation du compte
   const handleDeactivateAccount = () => {
-    setIsDeactivating(false); // Ferme le modal de désactivation
+    setIsDeactivating(false);
     message.success("Compte désactivé avec succès");
   };
 
-  // Rendu du contenu basé sur la vue actuelle (profil, rendez-vous, réservations, etc.)
   const renderContent = () => {
     switch (view) {
       case "profile":
@@ -133,11 +115,10 @@ const ProfileClient = (props) => {
               renderItem={(appointment) => (
                 <List.Item>
                   <List.Item.Meta
-                    title={`Rendez-vous avec ${appointment.prestataire}`} // Affiche le prestataire pour chaque rendez-vous
-                    description={`Date: ${appointment.date} - Heure: ${appointment.heure}`} // Affiche la date et l'heure
+                    title={`Rendez-vous avec ${appointment.prestataire}`}
+                    description={`Date: ${appointment.date} - Heure: ${appointment.heure}`}
                   />
-                  <Button type="primary">Confirmer</Button>{" "}
-                  {/* Ajouter fonctionnalité de confirmation */}
+                  <Button type="primary">Confirmer</Button>
                 </List.Item>
               )}
             />
@@ -153,8 +134,8 @@ const ProfileClient = (props) => {
               renderItem={(reservation) => (
                 <List.Item>
                   <List.Item.Meta
-                    title={`Service: ${reservation.service}`} // Affiche le service réservé
-                    description={`Date: ${reservation.date}`} // Affiche la date de la réservation
+                    title={`Service: ${reservation.service}`}
+                    description={`Date: ${reservation.date}`}
                   />
                 </List.Item>
               )}
@@ -171,13 +152,12 @@ const ProfileClient = (props) => {
                 const formattedDate = date.format("YYYY-MM-DD");
                 const appointmentsOnDate = appointments.filter(
                   (app) => app.date === formattedDate,
-                ); // Filtre les rendez-vous par date
+                );
                 return appointmentsOnDate.length ? (
                   <ul className="calendar-event">
                     {appointmentsOnDate.map((item) => (
                       <li key={item.id}>
-                        <Badge status="processing" text={item.heure} />{" "}
-                        {/* Affiche les horaires de rendez-vous */}
+                        <Badge status="processing" text={item.heure} />
                       </li>
                     ))}
                   </ul>
@@ -190,10 +170,8 @@ const ProfileClient = (props) => {
         return (
           <div>
             <Title level={3}>Bienvenue, {clientData.prenom} !</Title>
-            <p>Nombre de réservations : {clientData.nbReservations}</p>{" "}
-            {/* Affiche le nombre de réservations */}
-            <p>Nombre de rendez-vous : {clientData.nbRendezVous}</p>{" "}
-            {/* Affiche le nombre de rendez-vous */}
+            <p>Nombre de réservations : {clientData.nbReservations}</p>
+            <p>Nombre de rendez-vous : {clientData.nbRendezVous}</p>
           </div>
         );
     }
@@ -228,7 +206,6 @@ const ProfileClient = (props) => {
         </Card>
       </div>
 
-      {/* Modal pour modifier les informations */}
       <Modal
         title="Modifier le profil"
         visible={isEditing}
@@ -256,7 +233,6 @@ const ProfileClient = (props) => {
         </Form>
       </Modal>
 
-      {/* Modal de confirmation pour la désactivation */}
       <Modal
         title="Désactiver le compte"
         visible={isDeactivating}

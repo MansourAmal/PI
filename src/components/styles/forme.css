@@ -1,0 +1,83 @@
+.hero__form {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  bottom: 180px; /* Ajustez cette valeur pour le positionnement vertical */
+  width: 100%;
+}
+
+.form__row {
+  box-shadow: 5px 5px 15px -5px #e7f3ff;
+  background-color: #ffffffca; /* Ajout du fond blanc */
+  z-index: 11;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px; /* Ajout d'une marge intérieure */
+  border-radius: 10px; /* Ajout d'une bordure arrondie */
+  border: 2px solid #ffffff; /* Ajout d'une bordure blanche */
+  margin: 0 20px; /* Ajout de marge horizontale pour séparer du bord */
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.form_item {
+  width: 100%;
+  display: flex;
+  gap: 20px;
+  justify-content: center;
+  align-items: center;
+}
+
+.date-picker {
+  width: 180px; 
+}
+
+@media only screen and (max-width: 992px) {
+  .form__row {
+    padding: 30px 10px;
+    flex-direction: column;
+  }
+
+  .hero__form {
+    bottom: -100px;
+  }
+}
+
+@media only screen and (max-width: 768px) {
+  .find__cars-left {
+    padding-top: 20px;
+    padding-bottom: 0;
+    background: #fff;
+    text-align: center;
+  }
+
+  .form__row {
+    padding: 20px 10px;
+  }
+}
+
+@media only screen and (max-width: 576px) {
+  .form__row {
+    width: 100%;
+    margin: auto;
+    margin-bottom: 15px;
+  }
+
+  .form__row input {
+    font-size: 0.7rem !important;
+  }
+
+  .find__car-btn {
+    font-size: 0.8rem;
+  }
+
+  .hero__form {
+    bottom: -250px;
+  }
+}

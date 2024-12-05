@@ -1,6 +1,5 @@
 import React, { useState } from "react";
-import {
-  Input,
+import {Input,
   Button,
   Card,
   Form,
@@ -41,6 +40,7 @@ const Register = () => {
             adresse: values.adresse,
             role: values.role,
             password: values.password,
+            fileList:values.fileList,
           },
           client:
             values.role === "client"
