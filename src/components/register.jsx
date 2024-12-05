@@ -58,7 +58,7 @@ const Register = () => {
       const data = await response.json();
       console.log("Registration successful", data);
       if (values.role === "client") {
-        navigate("/profilcli");
+        navigate("/homecli");
       } else if (values.role === "prestataire") {
         navigate("/profilpres");
       }

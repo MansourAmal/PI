@@ -30,8 +30,16 @@ const Login = () => {
 
       if (response.ok) {
         message.success("Login successful!");
-        const clientId = data.id;
-        navigate(`/profilcli/${clientId}`);
+        const userId = data.id;
+        const userRole = data.role;  
+
+        if (userRole === "client") {
+          navigate(`/homecli/${userId}`);  
+        } else if (userRole === "prestataire") {
+          navigate(`/profilpres/${userId}`);  
+        } else {
+          message.error("Role inconnu.");
+        }
       } else {
         message.error(data.message || "Login failed!");
       }
